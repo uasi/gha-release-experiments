@@ -6,6 +6,10 @@ use std::thread;
 use std::time::Duration;
 
 use anyhow::{anyhow, Result};
+
+#[cfg(not(any(windows, target_os = "macos")))]
+use copypasta::{nop_clipboard::NopClipboardContext as ClipboardContext, ClipboardProvider};
+#[cfg(any(windows, target_os = "macos"))]
 use copypasta::{ClipboardContext, ClipboardProvider};
 
 pub fn spawn_watcher() -> Receiver<Option<String>> {
